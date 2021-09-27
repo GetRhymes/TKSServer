@@ -21,4 +21,15 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>PolySerializable-mvn-repo</id>
+            <url>https://raw.github.com/GetRhymes/PolySerializable/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
 </project>
