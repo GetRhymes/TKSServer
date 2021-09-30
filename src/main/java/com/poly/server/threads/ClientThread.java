@@ -5,6 +5,10 @@ import com.poly.server.utils.MessageReader;
 import com.poly.server.utils.MessageWriter;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Queue;
@@ -34,16 +38,23 @@ public class ClientThread extends Thread {
                     if(messageReader.readyForMessageReading()) {
                         message = messageReader.readMessage();
                         String fileName = message.getFileName();
-                        Long fileSize = message.getFileSize();
+                        Integer fileSize = message.getFileSize();
+                        System.out.println("FILE SIZE= " + fileSize);
                         if(fileName != null && !fileName.isEmpty() && fileSize != null && fileSize > 0) {
-                            file = messageReader.readFile(fileSize.intValue());
+                            file = messageReader.readFile(fileSize);
+                            System.out.println("FILE SIZE ACT = " + file.length);
+                            for (int i = 0; i < fileSize; i++) {
+                                System.out.print(file[i] + " ");
+                            }
                         }
                     }
                     if(message != null) {
-                        message.setDate(new Date(System.currentTimeMillis()).toString());
+                        message.setDate((LocalDate.now().toString() + " " + LocalTime.now().toString()).replace(":", "."));
                         messageWriter.writeMessage(message);
+                        System.out.println("WRITE MSH");
                         if(file != null && file.length > 0) {
                             messageWriter.writeFile(file);
+                            System.out.println("WRITE FILE");
                         }
                     }
                 } catch (IOException e) {

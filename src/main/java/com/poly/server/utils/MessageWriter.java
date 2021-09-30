@@ -24,5 +24,6 @@ public class MessageWriter {
 
     public void writeFile(byte[] file) throws IOException {
         outputStream.write(file);
+        outputStream.flush();
     }
 }
