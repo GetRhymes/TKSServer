@@ -1,5 +1,7 @@
 package com.poly.server.threads;
 
+import com.poly.server.utils.MessageWriter;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -11,11 +13,11 @@ import java.util.Queue;
 public class ServerThread extends Thread {
 
     private static Integer PORT = 65432;
-    private List<PrintWriter> writers;
+    private List<MessageWriter> writers;
 
     private ServerSocket serverSocket;
 
-    public ServerThread(Queue<String> queue) throws IOException {
+    public ServerThread() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
         this.writers = new LinkedList<>();
         this.start();
