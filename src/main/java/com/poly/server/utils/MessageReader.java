@@ -16,7 +16,10 @@ public class MessageReader {
 
     public byte[] readFile(int size) throws IOException {
         System.out.println("READ FILE");
-        return inputStream.readNBytes(size);
+        byte[] file = new byte[size];
+        file = inputStream.readNBytes(size);
+        inputStream.skip(1l);
+        return file;
     }
 
     public Message readMessage() throws IOException {
@@ -24,6 +27,7 @@ public class MessageReader {
         for (int i = 0; i < 4; i++) {
             size = size << 8;
             size += inputStream.read();
+            System.out.println("SIZE: " + size);
         }
         Message message = new Message();
         String s = new String(inputStream.readNBytes(size));

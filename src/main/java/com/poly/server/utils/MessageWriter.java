@@ -19,7 +19,16 @@ public class MessageWriter {
     }
 
     public void writeMessage(Message message) {
-        printWriter.println(message.toTransferString());
+        String strMessage = message.toTransferString();
+        try {
+            outputStream.write(strMessage.length() << 24);
+            outputStream.write(strMessage.length() << 16);
+            outputStream.write(strMessage.length() << 8);
+            outputStream.write(strMessage.length());
+            outputStream.write(strMessage.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void writeFile(byte[] file) throws IOException {
