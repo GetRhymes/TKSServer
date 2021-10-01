@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Queue<String> queue = new LinkedList<>();
         try {
-            ServerThread serverThread = new ServerThread();
+            new ServerThread();
         } catch (IOException e) {
             e.printStackTrace();
         }

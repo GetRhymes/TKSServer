@@ -6,12 +6,8 @@ import com.poly.server.utils.MessageWriter;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Queue;
 
 public class ClientThread extends Thread {
 
@@ -35,26 +31,21 @@ public class ClientThread extends Thread {
                 try {
                     message = null;
                     file = null;
-                    if(messageReader.readyForMessageReading()) {
+                    if (messageReader.readyForMessageReading()) {
                         message = messageReader.readMessage();
                         String fileName = message.getFileName();
                         Integer fileSize = message.getFileSize();
-                        System.out.println("FILE SIZE= " + fileSize);
-                        if(fileName != null && !fileName.isEmpty() && fileSize != null && fileSize > 0) {
+                        if (fileName != null && !fileName.isEmpty() && fileSize != null && fileSize > 0) {
                             file = messageReader.readFile(fileSize);
-                            System.out.println("FILE SIZE ACT = " + file.length);
-                            for (int i = 0; i < fileSize; i++) {
-                                System.out.print(file[i] + " ");
-                            }
                         }
                     }
-                    if(message != null) {
-                        message.setDate((LocalDate.now().toString() + " " + LocalTime.now().toString()).replace(":", "."));
-                        messageWriter.writeMessage(message);
-                        System.out.println("WRITE MSH");
-                        if(file != null && file.length > 0) {
-                            messageWriter.writeFile(file);
-                            System.out.println("WRITE FILE");
+                    if (message != null) {
+                        for (MessageWriter writer : writers) {
+                            message.setDate((LocalDate.now().toString() + " " + LocalTime.now().toString()).replace(":", "."));
+                            writer.writeMessage(message);
+                            if (file != null && file.length > 0) {
+                                writer.writeFile(file);
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -62,6 +53,12 @@ public class ClientThread extends Thread {
                 }
             }
         } finally {
+            try {
+                messageReader.close();
+                messageWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             writers.remove(messageWriter);
         }
     }
