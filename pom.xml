@@ -36,7 +36,7 @@
     <repositories>
         <repository>
             <id>PolySerializable-mvn-repo</id>
-            <url>https://raw.github.com/GetRhymes/PolySerializable/mvn-repo/</url>
+            <url>https://raw.github.com/GetRhymes/PolySerialize/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
