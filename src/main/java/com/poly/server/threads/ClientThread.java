@@ -1,10 +1,12 @@
 package com.poly.server.threads;
 
-import com.poly.parser.Message;
-import com.poly.server.utils.MessageReader;
-import com.poly.server.utils.MessageWriter;
+import com.poly.models.MessageWithContent;
+import com.poly.sockets.MessageReader;
+import com.poly.sockets.MessageWriter;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,28 +27,19 @@ public class ClientThread extends Thread {
     public void run() {
         try {
             writers.add(messageWriter);
-            Message message;
-            byte[] file;
+            MessageWithContent message = null;
             while (true) {
                 try {
-                    message = null;
-                    file = null;
                     if (messageReader.readyForMessageReading()) {
-                        message = messageReader.readMessage();
-                        String fileName = message.getFileName();
-                        Integer fileSize = message.getFileSize();
-                        if (fileName != null && !fileName.isEmpty() && fileSize != null && fileSize > 0) {
-                            file = messageReader.readFile(fileSize);
-                        }
+                        message = messageReader.read();
+                        System.out.println("READED");
                     }
                     if (message != null) {
                         for (MessageWriter writer : writers) {
-                            message.setDate((LocalDate.now().toString() + " " + LocalTime.now().toString()).replace(":", "."));
-                            writer.writeMessage(message);
-                            if (file != null && file.length > 0) {
-                                writer.writeFile(file);
-                            }
+                            message.getMessage().setDate((LocalDate.now().toString() + " " + LocalTime.now().toString()).replace(":", "."));
+                            writer.write(message);
                         }
+                        message = null;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

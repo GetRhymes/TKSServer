@@ -1,14 +1,12 @@
 package com.poly.server.threads;
 
-import com.poly.server.utils.MessageWriter;
+import com.poly.sockets.MessageWriter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class ServerThread extends Thread {
 
