@@ -32,7 +32,6 @@ public class ClientThread extends Thread {
                 try {
                     if (messageReader.readyForMessageReading()) {
                         message = messageReader.read();
-                        System.out.println("READED");
                     }
                     if (message != null) {
                         for (MessageWriter writer : writers) {
